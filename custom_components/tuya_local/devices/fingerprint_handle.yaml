@@ -1,0 +1,87 @@
+name: Door lock
+legacy_type: ironzon_fingerprint_lock
+products:
+  - id: k53ok3u9
+    model: ML-EL516
+    name: Smart Lock
+entities:
+  - entity: lock
+    dps:
+      - id: 6
+        type: base64
+        name: bluetooth_unlock
+      - id: 12
+        type: integer
+        name: unlock_fingerprint
+        persist: false
+      - id: 19
+        name: unlock_ble
+        type: integer
+        persist: false
+  - entity: binary_sensor
+    class: sensor
+    name: Open/Close
+    dps:
+      - id: 17
+        name: sensor
+        type: boolean
+  - entity: sensor
+    class: battery
+    dps:
+      - id: 8
+        type: integer
+        name: sensor
+        unit: "%"
+  - entity: sensor
+    name: fingerprint_unlock
+    dps:
+      - id: 12
+        type: integer
+        name: sensor
+  - entity: sensor
+    name: Alert
+    class: enum
+    category: diagnostic
+    dps:
+      - id: 21
+        type: string
+        name: sensor
+        optional: true
+        persist: false
+        mapping:
+          - dps_val: null
+            value: ok
+          - dps_val: wrong_finger
+            value: Wrong Finger
+          - dps_val: wrong_password
+            value: Wrong Password
+          - dps_val: low_battery
+            value: Low Battery
+  - entity: number
+    name: Lock volume
+    category: config
+    dps:
+      - id: 31
+        type: string
+        name: value
+        unit: "%"
+        range:
+          min: 0
+          max: 100
+        mapping:
+          - dps_val: mute
+            step: 33
+            value: 0
+            icon: "mdi:volume-mute"
+          - dps_val: low
+            step: 33
+            value: 33
+            icon: "mdi:volume-low"
+          - dps_val: normal
+            step: 33
+            value: 66
+            icon: "mdi:volume-medium"
+          - dps_val: high
+            step: 33
+            value: 100
+            icon: "mdi:volume-high"
