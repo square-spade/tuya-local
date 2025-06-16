@@ -8,6 +8,9 @@ products:
   - id: okkyfgfs
     manufacturer: Ailrinni
     name: BLE fingerprint lock
+  - id: k53ok3u9
+    model: ML-EL516
+    name: Smart Lock
 entities:
   - entity: lock
     dps:
