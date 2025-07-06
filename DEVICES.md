@@ -5,7 +5,7 @@
 - Advanced Fires 1500 electric fireplace
 - Amantii Bespoke R1-2-AP1 fireplace
 - Andersson GSH heater
-- Arlec 2200W and 2400W panel heaters
+- Arlec 2200W and 2400W panel heaters, CEH243HA ceramic heater
 - Atomi AT1632/AT1635 ceramic heaters
 - Betterlife BT1500 IR heater
 - Blumfeldt/Klarstein Cosmic Beam Smart 24 infrared radiant heater
@@ -90,6 +90,7 @@
 - ElectriQ SupremeCool SC16HPW
 - Fersk Vind 2
 - Fisher Summer air conditioner
+- Fral Super Cool FSC08 WiFi portable air conditioner
 - Fral Super Cool FSC14.2 DH portable air conditioner
 - Friedrich Uni-Fit air conditioner (models: UCT14A30, UCT12A30, UCT08B10A)
 - Fujicool Yuzu heat pump
@@ -158,11 +159,12 @@
 - Hydrotherm Dynamic/X8 heat pump hot water systems (Gen 5 and 6)
 - ITS-4.5HD super water heat pump
 - Koi Duo HTW-TD-080KOID
+- Lohxa SR208C solar water heating controller
 - Modena ES-15-SKY water heater
 - Nulite NL-B245 monobloc heat pump
 - Powerworld PW040, PWS58330, PWS58410 air+water heat pumps
 - Sanden GAU-A45HPD WiFi heat pump controller
-- Lohxa SR208C solar water heating controller
+- SolarEast (Adlar Castra) Aurora II heat pump
 - Thermex IF series V pro and Lima 80V hot water systems
 
 ### Thermostats
@@ -242,6 +244,7 @@
 - Atomberg Gorilla fan V2
 - Atomi 52 inch ceiling fan
 - Aygrochy ventilation duct fan
+- Brandson A307362x3 tower fan
 - Breville AirDynamic 3D pedestal fan
 - Brilliant Ceiling fan with light
 - Calibo Cloudfan DC ceiling fan with light
@@ -268,7 +271,10 @@
 - Goldair Platinum tower fan (2 variants)
 - Hiper T3 bladeless fan
 - Hoenofly Smart Amari ceiling fan with light
+- Hombli 6-speed ceiling fan with RGBCW light
 - Homebase 12" oscillating fan
+- HomeMate 5 speed fan regulator
+- Howeall register booster fan (also branded Sanycasa)
 - Hunter Pacific 9 speed ceiling fan with light
 - HYD WeAir Plus bladeless fan with heating function
 - Immax Neo Lite Vento ceiling fan with light
@@ -283,10 +289,11 @@
 - Kogan bladeless fans
 - Mantra ceiling fan with light
 - New Widetech WPF-16SW5 7-speed pedestal fan
-- OmniBreeze DC2313R tower fan
+- OmniBreeze DC2313R tower fan (4-speed and 5-speed models)
 - Orison Chanfok Neo ceiling fan with light
 - Orison RGB ambient bladeless ceiling fan
 - Ovlaim ceiling fan with cool/warm white dimmable light
+- Point One Technology Storm VSPEC-IV dual axis corner fan
 - Prestige M3 ceiling fan with light
 - Princess DC pedestal fan
 - Reiga ceiling fans with and without light
@@ -423,6 +430,7 @@
 - Cecofry 5500 Connected air fryer
 - Etna VW644MC dishwasher
 - Götze and Jensen KT975K smart kettle
+- Homend Royaltea kettle
 - Inkbird iBBQ-4BW, iBBQ-4T, IBS-M1S, IBS-M2, IBT-26S cooking probe thermometers
 - Inkbird ISC-007BW smoker fan controller
 - Inkbird sous vide cooker (also supports Silvercrest sous vide sticks)
@@ -476,6 +484,7 @@
 - Stepuptech SG800, SPD800 solar inverters
 - Taxnele circuit breaker and energy meter
 - TOMPD-63LW, 63-WIFI energy meter circuit breakers
+- Tomzn energy meter
 - Tongou QCB2-WB WiFi 4P circuit breaker (3-phase and single phase variants)
 - Tongou SMR1 circuit breaker
 - Tongou ST463JWT 4P 3-phase circuit breaker
@@ -483,7 +492,7 @@
 - Unknown brand dual channel smart meter
 - V-WIFI-DL01-ES energy consumption single clamp meter
 - V-WIFI-DL02-ES energy consumption dual clamp meter
-- WDYK 2P63A, 3P 400V, 4P100A  energy meter circuit breakers
+- WDYK 2P63A, 3P 400V, 4P100A energy meter circuit breakers
 - Xoca DAC2121C BI energy meter
 - Yagusmart 3PN 63A 3-phase multi-tariff energy meter
 - Zemismart SDM01-TW0-12-ZM 3-phase bidirectional energy meter
@@ -506,6 +515,7 @@
 - Nine 32A EV charger
 - Noeifevo Q21W EV charger
 - Parkside PLGS 2012 A1 smart charger for powertools
+- SEVR X1 EV charger
 - Tary TA-AC380/22 EV charger
 - Tera W01 EV charger
 - Vevor Level 2, portable 7kW and 3.7kW EV chargers
@@ -550,6 +560,7 @@ the best option.
 - Grid Connect double outlet wall socket
 - Grid Connect double outlet with Energy Monitoring, Master and Individual switches and Child Lock
 - Grid Connect USB charger with power socket
+- HomeMate 2gang and 4gang switches
 - Inna/Automat-ON AUTO000014 7 channel underfloor heating controller
 - JH PCIe mini computer switch
 - JH PCIe pro+ computer switch
@@ -666,10 +677,12 @@ of device.
 - LSC Smart Connect CCT + RGB led strip
 - LSC Smart Connect garden spotlights
 - LSC Smart Connect Neon LED strip
+- LSC Smart Connect Party string lights
 - LSC smart connect RGB CCT lightbulb (similar to older generic bulbs, so may work for others)
 - Lytmi Fantasy/Neo 3 HDMI sync backlight
 - Malmbergs QS-WIFI-D02-TRIAC single dimmer module
 - Malmbergs QS-WIFI-D02-TRIAC-2C dual dimmer module
+- Malmbergs NV-SWQ triple dimmer module
 - Marpou RGBCW ceiling light
 - Mirabella Genio Pixel LED oval light
 - Moes dimmer switch
@@ -795,6 +808,7 @@ work reliably, even if listed below.
 ### Sirens
 
 - A03 siren
+- Airam S1WFAA siren
 - Neo Coolcam Siren with temperature and humidity alert (NAS-AB02W)
 - Orion Grid Connect SWS07HA indoor siren
 - Orion Grid Connect outdoor siren (also Elesion NX-4980)
@@ -901,6 +915,7 @@ port and password.
 - Vevor 76L self-cleaning litter box
 - WellToBe Automatic Pet Feeder (WB S36D)
 - YP pet feeder
+- Yuposl dual-band pet feeder
 
 ### Remote controllers
 
@@ -972,6 +987,7 @@ port and password.
 - Mirabella Genio motion sensor
 - Momcozy white noise machine (2 variants)
 - Mustool MT15/MT29 air quality box
+- Nedis WIFIPD10WT pill dispenser
 - Nedis WIFISA10CWT air quality monitor
 - PGST PA-010 indoor temperature and humidity sensor
 - PH-W218 water quality monitor
