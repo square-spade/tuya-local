@@ -97,6 +97,7 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
         self._approve_unlock_dp = dps_map.pop("approve_unlock", None)
         self._code_unlock_dp = dps_map.pop("code_unlock", None)
         self._remote_key_dp = dps_map.pop("remote_pd_setkey_check", None)  # DP73
+        self._ble_cmd_dp = dps_map.pop("ble_unlock_cmd", None)  # DP6 simple BLE unlock
         self._req_intercom_dp = dps_map.pop("request_intercom", None)
         self._approve_intercom_dp = dps_map.pop("approve_intercom", None)
         self._jam_dp = dps_map.pop("jammed", None)
@@ -238,6 +239,9 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
                 CODE_LOCK, member_id=1, code=code, source=CODE_SRC_UNKNOWN
             )
             await self._code_unlock_dp.async_set_value(self._device, msg)
+        elif self._ble_cmd_dp:
+            # DP6 devices have no remote lock command — locking is mechanical only.
+            raise NotImplementedError("This lock does not support remote locking")
         else:
             raise NotImplementedError()
 
@@ -257,6 +261,11 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
                 CODE_UNLOCK, member_id=1, code=code, source=CODE_SRC_APP
             )
             await self._code_unlock_dp.async_set_value(self._device, msg)
+        elif self._ble_cmd_dp:
+            # DP6 simple BLE unlock: action=0x01 (unlock), member_id=0x01
+            # No key required — the gateway handles authentication.
+            payload = b64encode(bytes([CODE_UNLOCK, 0x01])).decode()
+            await self._ble_cmd_dp.async_set_value(self._device, payload)
         elif self._lock_dp and not self._lock_dp.readonly:
             await self._lock_dp.async_set_value(self._device, False)
         elif self._approve_unlock_dp:
