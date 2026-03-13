@@ -8,31 +8,15 @@ entities:
       # action=0x01 (unlock), member_id=0x01.
       # There is no remote lock command on this device — locking is mechanical.
       # lock.py handles this via _ble_cmd_dp.
+      # NOTE: DP12 and DP19 are intentionally excluded from this entity.
+      # Including unlock record DPs causes is_locked to return False permanently
+      # due to stale cached values. State is reported as Unknown, which is
+      # honest — this device has no lock state DP.
       - id: 6
         type: base64
         name: ble_unlock_cmd
         optional: true
         persist: false
-      # [Report unlocking record] BLE unlock event from app or gateway.
-      # Used by is_locked fallback — briefly shows unlocked after each event
-      # then clears (persist: false), reverting to locked as best-effort state.
-      - id: 19
-        type: integer
-        name: unlock_ble
-        optional: true
-        persist: false
-        range:
-          min: 0
-          max: 999
-      # [Report unlocking record] Fingerprint unlock event.
-      - id: 12
-        type: integer
-        name: unlock_fingerprint
-        optional: true
-        persist: false
-        range:
-          min: 0
-          max: 999
 
   - entity: sensor
     class: battery
@@ -50,6 +34,26 @@ entities:
       # [Door open/close] 0=closed, 1=open. Record-type reporting.
       - id: 17
         type: boolean
+        name: sensor
+        optional: true
+
+  # Unlock records kept as standalone sensors so they are still visible
+  # in HA history without poisoning is_locked.
+  - entity: sensor
+    name: BLE unlock record
+    category: diagnostic
+    dps:
+      - id: 19
+        type: integer
+        name: sensor
+        optional: true
+
+  - entity: sensor
+    name: Fingerprint unlock record
+    category: diagnostic
+    dps:
+      - id: 12
+        type: integer
         name: sensor
         optional: true
 
