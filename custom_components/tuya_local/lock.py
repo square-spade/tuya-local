@@ -1,6 +1,8 @@
 """
 Setup for different kinds of Tuya lock devices
 """
+import random
+import string
 
 from base64 import b64decode, b64encode
 
@@ -49,9 +51,9 @@ CODE_REPLY_DOUBLELOCKED = 0x06
 #   Bytes  1- 2: Member ID (2 bytes)
 #   Bytes  3-10: Key (8 bytes ASCII)  ← extracted for DP61 unlock
 #   Bytes 11-12: Access times (2 bytes, 0x0000=infinite)
-DP73_KEY_OFFSET = 3
-DP73_KEY_LENGTH = 8
-DP73_MIN_LENGTH = DP73_KEY_OFFSET + DP73_KEY_LENGTH  # 11 bytes
+PD_KEY_OFFSET = 3
+PD_KEY_LENGTH = 8
+PD_MIN_LENGTH = PD_KEY_OFFSET + PD_KEY_LENGTH  # 11 bytes
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -106,24 +108,7 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
             self._attr_supported_features = LockEntityFeature.OPEN
 
     def _get_remote_key(self):
-        """Extract the 8-byte ASCII key from a cached DP73 payload.
-
-        The Tuya cloud sends DP73 (remote_pd_setkey_check) to the device
-        during pairing. TuyaLocal caches this value. We decode it here to
-        obtain the key needed to send a DP61 (code_unlock) remote unlock
-        command, so the user never has to enter the key manually.
-
-        The BLE framing (Central ID, Peripheral ID, Random number) is stripped
-        by the gateway before the message reaches TuyaLocal via MQTT. The
-        inner payload layout is:
-          Byte      0: Validity (1 byte, 0x01 = valid)
-          Bytes  1- 2: Member ID (2 bytes)
-          Bytes  3-10: Key (8 bytes ASCII)  ← returned by this method
-          Bytes 11-12: Access times (2 bytes)
-
-        Returns:
-          str: 8-character ASCII key, or None if unavailable/invalid.
-        """
+        """Extract the 8-byte ASCII key from a cached payload."""
         if self._remote_key_dp is None:
             return None
         raw = self._remote_key_dp.get_value(self._device)
@@ -131,13 +116,39 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
             return None
         try:
             decoded = b64decode(raw)
-            if len(decoded) < DP73_MIN_LENGTH:
+            if len(decoded) < PD_MIN_LENGTH:
                 return None
-            key = decoded[DP73_KEY_OFFSET : DP73_KEY_OFFSET + DP73_KEY_LENGTH]
+            key = decoded[PD_KEY_OFFSET : PD_KEY_OFFSET + PD_KEY_LENGTH]
             return key.decode("ascii")
         except Exception:
             return None
 
+    async def _set_remote_key(self):
+        """Provision a random 8-digit key if one is not already set."""
+        existing_key = self._get_remote_key()
+        if existing_key:
+            return existing_key
+
+        new_code = ''.join(random.choices(string.digits, k=8))
+        start_ts = 0x386CD300
+        end_ts = 0x72BC9B7F
+
+        payload = self.build_code_set_key(
+            validity=0x01,
+            member_id=1,
+            start_time=start_ts,
+            end_time=end_ts,
+            access_times=0,
+            code=new_code
+        )
+
+        if self._remote_key_dp:
+            await self._remote_key_dp.async_set_value(self._device, payload)
+            # Update cache immediately so it's available for subsequent calls
+            self._device._cached_state[self._remote_key_dp.id] = payload
+            return new_code
+        
+        return None
     @property
     def is_locked(self):
         """Return the a boolean representing whether the lock is locked."""
@@ -232,7 +243,7 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
         if self._lock_dp and not self._lock_dp.readonly:
             await self._lock_dp.async_set_value(self._device, True)
         elif self._code_unlock_dp:
-            code = kwargs.get("code") or self._get_remote_key()
+            code = kwargs.get("code") or await self._set_remote_key()
             if not code:
                 raise ValueError("Code required to lock")
             msg = self.build_code_unlock_msg(
@@ -240,7 +251,6 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
             )
             await self._code_unlock_dp.async_set_value(self._device, msg)
         elif self._ble_cmd_dp:
-            # DP6 devices have no remote lock command — locking is mechanical only.
             raise NotImplementedError("This lock does not support remote locking")
         else:
             raise NotImplementedError()
@@ -250,20 +260,16 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
         if self._code_unlock_dp:
             # Prefer an explicitly provided code (e.g. from automation),
             # otherwise extract automatically from the cached DP73 payload.
-            code = kwargs.get("code") or self._get_remote_key()
+            code = kwargs.get("code") or await self._set_remote_key()
             if not code:
                 raise ValueError(
-                    "Remote unlock key not available. Ensure the lock has been "
-                    "paired via the SmartLife app so the Tuya cloud can provision "
-                    "the key (DP73) to the device."
+                    "Remote unlock key not available. See Docs"
                 )
             msg = self.build_code_unlock_msg(
                 CODE_UNLOCK, member_id=1, code=code, source=CODE_SRC_APP
             )
             await self._code_unlock_dp.async_set_value(self._device, msg)
         elif self._ble_cmd_dp:
-            # DP6 simple BLE unlock: action=0x01 (unlock), member_id=0x01
-            # No key required — the gateway handles authentication.
             payload = b64encode(bytes([CODE_UNLOCK, 0x01])).decode()
             await self._ble_cmd_dp.async_set_value(self._device, payload)
         elif self._lock_dp and not self._lock_dp.readonly:
@@ -296,4 +302,19 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
         msg += code.encode("ascii")
         msg += source.to_bytes(2, "big")
         # msg += b"\x00"  # ordinary user (0x01 is admin)
+        return b64encode(msg).decode("utf-8")
+
+    def build_code_set_key(self, validity, member_id, start_time, end_time, access_times, code):
+        """Generate the 21-byte DP 60/73 remote key provisioning message."""
+        if len(code) != 8 or not code.isascii():
+            raise ValueError("Code must be 8 ASCII characters")
+
+        msg = bytearray()
+        msg.append(validity)                           
+        msg += member_id.to_bytes(2, "big")
+        msg += start_time.to_bytes(4, "big")
+        msg += end_time.to_bytes(4, "big")
+        msg += access_times.to_bytes(2, "big")
+        msg += code.encode("ascii")
+
         return b64encode(msg).decode("utf-8")
