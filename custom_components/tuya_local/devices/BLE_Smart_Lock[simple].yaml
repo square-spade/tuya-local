@@ -1,0 +1,147 @@
+name: BLE lock
+products:
+  - id: 00000166wc
+entities:
+  - entity: lock
+    dps:
+      # [BLE Unlock Command] DP6 sends a 2-byte raw payload to unlock.
+      # action=0x01 (unlock), member_id=0x01.
+      # There is no remote lock command on this device — locking is mechanical.
+      # lock.py handles this via _ble_cmd_dp.
+      # NOTE: DP12 and DP19 are intentionally excluded from this entity.
+      # Including unlock record DPs causes is_locked to return False permanently
+      # due to stale cached values. State is reported as Unknown, which is
+      # honest — this device has no lock state DP.
+      - id: 6
+        type: base64
+        name: ble_unlock_cmd
+        optional: true
+        persist: false
+
+  - entity: sensor
+    class: battery
+    dps:
+      - id: 8
+        type: integer
+        name: sensor
+        unit: "%"
+        optional: true
+
+  - entity: binary_sensor
+    class: door
+    name: Door
+    dps:
+      # [Door open/close] 0=closed, 1=open. Record-type reporting.
+      - id: 17
+        type: boolean
+        name: sensor
+        optional: true
+
+  # Unlock records kept as standalone sensors so they are still visible
+  # in HA history without poisoning is_locked.
+  - entity: sensor
+    name: BLE unlock record
+    category: diagnostic
+    dps:
+      - id: 19
+        type: integer
+        name: sensor
+        optional: true
+
+  - entity: sensor
+    name: Fingerprint unlock record
+    category: diagnostic
+    dps:
+      - id: 12
+        type: integer
+        name: sensor
+        optional: true
+
+  - entity: event
+    name: Alert
+    dps:
+      - id: 21
+        type: string
+        name: event
+        optional: true
+        mapping:
+          - dps_val: wrong_finger
+            value: wrong_finger
+          - dps_val: wrong_password
+            value: wrong_password
+          - dps_val: wrong_card
+            value: wrong_card
+          - dps_val: wrong_face
+            value: wrong_face
+          - dps_val: tongue_bad
+            value: tongue_bad
+          - dps_val: too_hot
+            value: too_hot
+          - dps_val: unclosed_time
+            value: unclosed_time
+          - dps_val: tongue_not_out
+            value: tongue_not_out
+          - dps_val: pry
+            value: pry
+          - dps_val: key_in
+            value: key_in
+          - dps_val: low_battery
+            value: low_battery
+          - dps_val: power_off
+            value: power_off
+          - dps_val: shock
+            value: shock
+
+  - entity: select
+    name: Volume
+    category: config
+    dps:
+      - id: 31
+        type: string
+        name: option
+        optional: true
+        mapping:
+          - dps_val: mute
+            value: Mute
+          - dps_val: low
+            value: Low
+          - dps_val: normal
+            value: Normal
+          - dps_val: high
+            value: High
+
+  - entity: text
+    name: New credential
+    category: config
+    icon: "mdi:card-plus"
+    hidden: true
+    dps:
+      - id: 1
+        type: base64
+        optional: true
+        sensitive: true
+        name: value
+
+  - entity: text
+    name: Delete credential
+    category: config
+    icon: "mdi:card-minus"
+    hidden: true
+    dps:
+      - id: 2
+        type: base64
+        optional: true
+        sensitive: true
+        name: value
+
+  - entity: text
+    name: Sync credentials
+    category: config
+    icon: "mdi:lock-reset"
+    hidden: true
+    dps:
+      - id: 54
+        type: base64
+        optional: true
+        sensitive: true
+        name: value
