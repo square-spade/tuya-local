@@ -82,6 +82,7 @@ entities:
       - id: 112
         type: integer
         name: sensor
+        class: measurement
       - id: 106
         name: unit
         type: string
@@ -98,6 +99,7 @@ entities:
       - id: 113
         name: sensor
         type: integer
+        class: measurement
       - id: 106
         name: unit
         type: string
@@ -114,6 +116,7 @@ entities:
       - id: 114
         name: sensor
         type: integer
+        class: measurement
       - id: 106
         name: unit
         type: string
@@ -123,13 +126,13 @@ entities:
           - dps_val: c
             value: C
   - entity: sensor
-    category: diagnostic
-    name: Ambient temperature
+    translation_key: ambient_temperature
     class: temperature
     dps:
       - id: 115
         name: sensor
         type: integer
+        class: measurement
       - id: 106
         name: unit
         type: string
@@ -146,6 +149,7 @@ entities:
       - id: 118
         name: sensor
         type: integer
+        class: measurement
       - id: 106
         name: unit
         type: string
@@ -162,6 +166,7 @@ entities:
       - id: 119
         name: sensor
         type: integer
+        class: measurement
       - id: 106
         name: unit
         type: string
@@ -178,6 +183,7 @@ entities:
       - id: 120
         name: sensor
         type: integer
+        class: measurement
       - id: 106
         name: unit
         type: string

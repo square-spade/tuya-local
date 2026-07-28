@@ -5,7 +5,6 @@ products:
     model: Black Diamond all-in-one
 entities:
   - entity: water_heater
-    translation_only_key: hot_water
     dps:
       - id: 1
         type: boolean
@@ -85,6 +84,7 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
     class: power
     category: diagnostic
@@ -93,6 +93,7 @@ entities:
         type: integer
         name: sensor
         unit: W
+        class: measurement
   - entity: sensor
     name: Top temperature
     class: temperature
@@ -102,6 +103,7 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
     name: Bottom temperature
     class: temperature
@@ -111,6 +113,7 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: binary_sensor
     class: opening
     name: Four-way valve

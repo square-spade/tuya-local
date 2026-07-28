@@ -28,13 +28,13 @@ entities:
 
   - entity: sensor
     class: temperature
-    name: Ambient temperature
-    category: diagnostic
+    translation_key: ambient_temperature
     dps:
       - id: 102
         type: integer
         name: sensor
         unit: "°C"
+        class: measurement
   - entity: sensor
     class: temperature
     name: Heatcoil temperature
@@ -44,6 +44,7 @@ entities:
         type: integer
         name: sensor
         unit: "°C"
+        class: measurement
   - entity: binary_sensor
     name: Water flow
     class: problem

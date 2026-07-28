@@ -3,6 +3,9 @@ products:
   - id: auojpnb4hpc13ftb
     manufacturer: Arlec
     model: PC191HA
+  - id: keyjup78v54myhan
+    manufacturer: Arlec
+    model: PC191HA Series 3
   - id: 2fxr6sttw70cgbau
     manufacturer: Antela
     model: ZY-OYD-Y
@@ -18,6 +21,12 @@ products:
   - id: as9lf4slujgvu5tm
     manufacturer: ZhiYun
     model: P01
+  - id: pq860vo9ib50jhud
+    manufacturer: Positivo
+    model: 10A CTD
+  - id: i4fg8sszym1rtqz7
+    manufacturer: Voltcraft
+    model: SEM6500
 entities:
   - entity: switch
     class: outlet
@@ -60,13 +69,13 @@ entities:
   - entity: sensor
     category: diagnostic
     hidden: true
-    name: Energy
+    class: energy
     dps:
       - id: 17
         name: sensor
         type: integer
         unit: Wh
-        class: measurement
+        class: total_increasing
         optional: true
       - id: 25
         type: integer

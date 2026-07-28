@@ -50,8 +50,9 @@ entities:
         name: sensor
         type: integer
         unit: "mV"
+        class: measurement
   - entity: text
-    name: Meal plan
+    translation_key: meal_plan
     category: config
     hidden: true
     dps:

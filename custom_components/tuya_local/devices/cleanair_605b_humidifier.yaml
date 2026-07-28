@@ -34,13 +34,13 @@ entities:
           - dps_val: level3
             value: boost
   - entity: sensor
-    name: Current temperature
     class: temperature
     dps:
       - id: 10
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: switch
     translation_key: sleep
     dps:

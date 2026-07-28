@@ -227,6 +227,7 @@ entities:
     name: Inlet temperature
     category: diagnostic
     class: temperature
+    deprecated: climate.current_temperature  # 2026-07-12
     dps:
       - id: 21
         name: sensor
@@ -264,7 +265,7 @@ entities:
         unit: "C"
         class: measurement
   - entity: sensor
-    name: Ambient temperature
+    translation_key: ambient_temperature
     class: temperature
     dps:
       - id: 26

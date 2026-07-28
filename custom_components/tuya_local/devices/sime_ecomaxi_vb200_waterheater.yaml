@@ -5,7 +5,6 @@ products:
     model: EcoMaxi VB 200 WiFi
 entities:
   - entity: water_heater
-    translation_only_key: hot_water
     dps:
       - id: 1
         name: operation_mode
@@ -13,10 +12,8 @@ entities:
         mapping:
           - dps_val: false
             value: "off"
-            icon: "mdi:water-boiler-off"
           - dps_val: true
             value: heat_pump
-            icon: "mdi:water-boiler"
       - id: 4
         name: temperature
         type: integer
@@ -70,6 +67,7 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
     name: Air outlet temperature
     class: temperature
@@ -79,15 +77,16 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
-    name: Ambient temperature
+    translation_key: ambient_temperature
     class: temperature
-    category: diagnostic
     dps:
       - id: 26
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
     name: Solar collector temperature
     class: temperature
@@ -97,6 +96,7 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
     name: EEV valve opening
     icon: "mdi:valve"
@@ -114,6 +114,7 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
     name: Display board temperature
     icon: "mdi:monitor"
@@ -123,6 +124,7 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: binary_sensor
     name: Water pump
     icon: "mdi:pump"

@@ -53,7 +53,7 @@ DEVICE_DETAILS_URL = (
 
 class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
     VERSION = 13
-    MINOR_VERSION = 17
+    MINOR_VERSION = 21
     CONNECTION_CLASS = CONN_CLASS_LOCAL_PUSH
     device = None
     data = {}
@@ -69,6 +69,30 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
     def init_cloud(self):
         if self.cloud is None:
             self.cloud = Cloud(self.hass)
+
+    async def async_step_integration_discovery(self, discovery_info):
+        """Handle a device found on the LAN by the background scanner.
+
+        Pre-fills the manual setup form with the discovered id/ip/version; the
+        user still supplies the local key. Aborts if the device is already
+        configured or has been ignored.
+        """
+        device_id = discovery_info.get(CONF_DEVICE_ID)
+        await self.async_set_unique_id(device_id)
+        self._abort_if_unique_id_configured()
+        # Reuse the cloud-device plumbing that async_step_local reads for its
+        # form defaults; the local key is not known from discovery.
+        self.__cloud_device = {
+            "id": device_id,
+            "ip": discovery_info.get(CONF_HOST),
+            "version": discovery_info.get("version"),
+            "local_product_id": discovery_info.get("product_id"),
+            CONF_LOCAL_KEY: "",
+        }
+        self.context["title_placeholders"] = {
+            "name": discovery_info.get(CONF_HOST) or device_id
+        }
+        return await self.async_step_local()
 
     async def async_step_user(self, user_input=None):
         errors = {}
@@ -444,15 +468,12 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
         best_match = 0
         best_matching_type = None
         best_matching_key = None
-        has_product_id_match = False
 
         for dev_type in await self.device.async_possible_types():
             q = dev_type.match_quality(
                 self.device._get_cached_state(),
                 self.device._product_ids,
             )
-            if q > 100:
-                has_product_id_match = True
             for manufacturer, model in dev_type.product_display_entries(
                 self.device._product_ids
             ):
@@ -468,10 +489,8 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
                     best_matching_type = dev_type.config_type
                     best_matching_key = key
 
-        if has_product_id_match:
-            type_options = [opt for opt, q in all_matches if q > 100]
-        else:
-            type_options = [opt for opt, _ in all_matches]
+        all_matches.sort(key=lambda x: x[1], reverse=True)
+        type_options = [opt for opt, _ in all_matches]
 
         best_match = int(best_match)
         dps = self.device._get_cached_state()
@@ -696,5 +715,5 @@ async def async_test_connection(config: dict, hass: HomeAssistant):
     return retval
 
 
-def scan_for_device(id):
-    return tinytuya.find_device(dev_id=id)
+def scan_for_device(devid):
+    return tinytuya.find_device(dev_id=devid)

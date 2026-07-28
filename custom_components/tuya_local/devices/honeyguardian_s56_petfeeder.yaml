@@ -15,7 +15,7 @@ entities:
           max: 6
 
   - entity: text
-    name: Meal plan
+    translation_key: meal_plan
     category: config
     hidden: true
     dps:
@@ -86,7 +86,6 @@ entities:
             value: 24 hour
             icon: "mdi:hours-24"
   - entity: sensor
-    category: diagnostic
     class: battery
     dps:
       - id: 103

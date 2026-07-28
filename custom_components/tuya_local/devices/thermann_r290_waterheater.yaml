@@ -3,6 +3,9 @@ products:
   - id: yyyonqkhysbmr2ov
     manufacturer: Thermann
     model: R290
+  - id: zqxgahp15mkausb1
+    manufacturer: Reclaim Energy
+    model: R290
 entities:
   - entity: switch
     dps:
@@ -10,7 +13,6 @@ entities:
         type: boolean
         name: switch
   - entity: water_heater
-    translation_only_key: hot_water
     dps:
       - id: 4
         type: string
@@ -55,6 +57,7 @@ entities:
     dps:
       - id: 101
         type: boolean
+        optional: true
         name: sensor
   - entity: sensor
     name: Remaining holiday
@@ -101,6 +104,7 @@ entities:
       - id: 106
         type: integer
         name: sensor
+        class: measurement
   - entity: sensor
     name: Inlet water temperature
     class: temperature
@@ -111,16 +115,16 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
-    name: Ambient temperature
-    icon: "mdi:thermometer"
+    translation_key: ambient_temperature
     class: temperature
-    category: diagnostic
     dps:
       - id: 108
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
     name: Discharge temperature
     icon: "mdi:coolant-temperature"
@@ -131,6 +135,7 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
     name: Coil temperature
     icon: "mdi:thermometer-lines"
@@ -141,6 +146,7 @@ entities:
         type: integer
         name: sensor
         unit: C
+        class: measurement
   - entity: sensor
     name: Suction temperature
     icon: "mdi:hydraulic-oil-temperature"

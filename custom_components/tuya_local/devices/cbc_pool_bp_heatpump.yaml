@@ -57,15 +57,16 @@ entities:
         name: sensor
         type: integer
         unit: C
+        class: measurement
   - entity: sensor
-    name: Ambient temperature
+    translation_key: ambient_temperature
     class: temperature
-    category: diagnostic
     dps:
       - id: 102
         name: sensor
         type: integer
         unit: C
+        class: measurement
   - entity: sensor
     name: Compressor exhaust
     class: temperature
@@ -75,6 +76,7 @@ entities:
         name: sensor
         type: integer
         unit: C
+        class: measurement
   - entity: sensor
     name: Heating coil temperature
     class: temperature
@@ -84,6 +86,7 @@ entities:
         name: sensor
         type: integer
         unit: C
+        class: measurement
   - entity: sensor
     name: Outlet water temperature
     class: temperature
@@ -93,6 +96,7 @@ entities:
         name: sensor
         type: integer
         unit: C
+        class: measurement
   - entity: sensor
     name: Return temperature
     class: temperature
@@ -102,6 +106,7 @@ entities:
         name: sensor
         type: integer
         unit: C
+        class: measurement
   - entity: sensor
     name: Operating frequency
     class: frequency
