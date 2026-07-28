@@ -1,7 +1,7 @@
 """
 Setup for different kinds of Tuya lock devices
 """
-import random
+import secrets
 import string
 
 import logging
@@ -132,7 +132,7 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
         if existing_key:
             return existing_key
 
-        new_code = ''.join(random.choices(string.digits, k=8))
+        new_code = ''.join(secrets.choice(string.digits) for _ in range(8))
         start_ts = 0x386CD300
         end_ts = 0x72BC9B7F
 
@@ -150,7 +150,7 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
             # Update cache immediately so it's available for subsequent calls
             self._device._cached_state[self._remote_key_dp.id] = payload
             return new_code
-        
+
         return None
     @property
     def is_locked(self):
@@ -320,7 +320,7 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
             raise ValueError("Code must be 8 ASCII characters")
 
         msg = bytearray()
-        msg.append(validity)                           
+        msg.append(validity)
         msg += member_id.to_bytes(2, "big")
         msg += start_time.to_bytes(4, "big")
         msg += end_time.to_bytes(4, "big")
