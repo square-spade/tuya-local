@@ -43,7 +43,7 @@
 - Eurom Sani heated towel rail
 - Eurom Sani Wall Heat 2000 and Wall Designheat 2000 heaters
 - Eurom Sani 400,600,800 heaters
-- Goldair GPPH, GCPV, GECO, GPOC and PH-ET heaters
+- Goldair GPPH, GCPV, GCT, GECO, GPOC and PH-ET heaters
 - Hama radiator controller
 - Heatstorm DH-100-TWI, HS-1500 and HS-6000-GC heaters
 - Heatstrip Elegance outdoor heater
@@ -115,6 +115,7 @@
 - Be Cool BC14KL2101F
 - Beltax BAC-1009 air conditioner
 - Brokton BRST12 air conditioner
+- Carrier-Midea Ester Edge FXi split air conditioner
 - Carson CB PA280
 - Cecotec ForceClima Soundless portable air conditioner
 - Chigo air conditioner
@@ -994,8 +995,8 @@ of device.
 - Loginovo TV sync backlight
 - LSC Smart Connect CCT + RGB ceiling light
 - LSC Smart Connect CCT+RGB, RGB/IC+CCT/IC, Neon, Party led strips
-- LSC Smart Connect garden spotlights
-- LSC smart connect RGB CCT lightbulb (similar to older generic bulbs, so may work for others)
+- LSC Smart Connect garden spotlights and floor lamp
+- LSC Smart Connect RGB CCT lightbulb (similar to older generic bulbs, so may work for others)
 - Lumary D1 6 inch retrofit downlight (independent RGB ring and CCT centre)
 - Lytmi Fantasy/Neo 3 HDMI sync backlight
 - Malmbergs QS-WIFI-D02-TRIAC single dimmer module
@@ -1468,6 +1469,7 @@ port and password.
 - Tontine electric blanket
 - TOPENS TC196 remote control for gate openers
 - Treatlife 24GHz mmWave human presence sensor
+- Troxlly TP chlorine generator
 - TS100 water quality controller
 - TX-E gas sensor/alarm
 - Vevor YT60307 weather station
