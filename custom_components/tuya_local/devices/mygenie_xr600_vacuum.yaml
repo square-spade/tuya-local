@@ -100,7 +100,6 @@ entities:
       type: bitfield
       name: error
       readonly: true
-secondary_entities:
   - entity: switch
     translation_key: return_to_base
     category: config
