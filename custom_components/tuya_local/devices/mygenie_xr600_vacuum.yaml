@@ -1,0 +1,228 @@
+name: MyGenie XR600
+products:
+  - id: e1k592pc
+    manufacturer: MyGenie
+    model: XR600
+primary_entity:
+  entity: vacuum
+  dps:
+    - id: 1
+      type: boolean
+      name: power
+    - id: 2
+      type: boolean
+      name: activate
+    - id: 4
+      type: string
+      name: command
+      mapping:
+        - dps_val: smart
+          value: smart
+        - dps_val: chargego
+          value: return_to_base
+        - dps_val: zone
+          value: zone
+        - dps_val: pose
+          value: clean_spot
+        - dps_val: part
+          value: part
+        - dps_val: edge
+          value: edge
+        - dps_val: explore
+          value: explore
+        - dps_val: exploreclean
+          value: exploreclean
+    - id: 5
+      type: string
+      name: status
+      readonly: true
+      mapping:
+        - dps_val: standby
+          value: standby
+        - dps_val: smart
+          value: cleaning
+        - dps_val: zone_clean
+          value: cleaning
+        - dps_val: part_clean
+          value: cleaning
+        - dps_val: cleaning
+          value: cleaning
+        - dps_val: paused
+          value: paused
+        - dps_val: goto_charge
+          value: returning
+        - dps_val: charging
+          value: docked
+        - dps_val: charge_done
+          value: docked
+        - dps_val: sleep
+          value: standby
+        - dps_val: explore
+          value: cleaning
+        - dps_val: base_charging
+          value: docked
+    - id: 8
+      type: integer
+      name: battery
+      readonly: true
+    - id: 9
+      type: string
+      name: fan_speed
+      mapping:
+        - dps_val: gentle
+          value: gentle
+        - dps_val: normal
+          value: normal
+        - dps_val: strong
+          value: strong
+        - dps_val: max
+          value: max
+        - dps_val: closed
+          value: off
+    - id: 11
+      type: boolean
+      name: locate
+    - id: 12
+      type: string
+      name: direction_control
+      mapping:
+        - dps_val: foward
+          value: forward
+        - dps_val: backward
+          value: backward
+        - dps_val: turn_left
+          value: left
+        - dps_val: turn_right
+          value: right
+        - dps_val: stop
+          value: stop
+    - id: 28
+      type: bitfield
+      name: error
+      readonly: true
+secondary_entities:
+  - entity: switch
+    translation_key: return_to_base
+    category: config
+    dps:
+      - id: 3
+        type: boolean
+        name: switch
+  - entity: select
+    translation_key: water_level
+    category: config
+    dps:
+      - id: 10
+        type: string
+        name: option
+        mapping:
+          - dps_val: low
+            value: low
+          - dps_val: middle
+            value: middle
+          - dps_val: high
+            value: high
+          - dps_val: closed
+            value: off
+  - entity: select
+    translation_key: clean_efficiency
+    category: config
+    dps:
+      - id: 155
+        type: string
+        name: option
+        mapping:
+          - dps_val: fast
+            value: fast
+          - dps_val: normal
+            value: normal
+          - dps_val: careful
+            value: careful
+  - entity: sensor
+    translation_key: clean_time
+    category: diagnostic
+    dps:
+      - id: 6
+        type: integer
+        name: sensor
+        unit: min
+        class: measurement
+        readonly: true
+  - entity: sensor
+    translation_key: clean_area
+    category: diagnostic
+    dps:
+      - id: 7
+        type: integer
+        name: sensor
+        unit: m²
+        class: measurement
+        readonly: true
+  - entity: sensor
+    translation_key: edge_brush
+    category: diagnostic
+    dps:
+      - id: 17
+        type: integer
+        name: sensor
+        unit: min
+        class: measurement
+        readonly: true
+  - entity: sensor
+    translation_key: main_brush
+    category: diagnostic
+    dps:
+      - id: 19
+        type: integer
+        name: sensor
+        unit: min
+        class: measurement
+        readonly: true
+  - entity: sensor
+    translation_key: filter
+    category: diagnostic
+    dps:
+      - id: 21
+        type: integer
+        name: sensor
+        unit: min
+        class: measurement
+        readonly: true
+  - entity: switch
+    translation_key: do_not_disturb
+    category: config
+    dps:
+      - id: 25
+        type: boolean
+        name: switch
+  - entity: switch
+    translation_key: carpet_boost
+    category: config
+    dps:
+      - id: 45
+        type: boolean
+        name: switch
+  - entity: switch
+    translation_key: y_mop
+    category: config
+    dps:
+      - id: 149
+        type: boolean
+        name: switch
+  - entity: button
+    translation_key: empty_dustbin
+    dps:
+      - id: 38
+        type: boolean
+        name: button
+        optional: true
+  - entity: number
+    translation_key: volume
+    category: config
+    dps:
+      - id: 26
+        type: integer
+        name: value
+        range:
+          min: 0
+          max: 10
