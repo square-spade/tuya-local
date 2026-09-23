@@ -1,4 +1,4 @@
-name: MyGenie XR600
+name: Robot vacuum
 products:
   - id: e1k592pc
     manufacturer: MyGenie
@@ -6,100 +6,100 @@ products:
 entities:
   - entity: vacuum
     dps:
-    - id: 1
-      type: boolean
-      name: power
-    - id: 2
-      type: boolean
-      name: activate
-    - id: 4
-      type: string
-      name: command
-      mapping:
-        - dps_val: smart
-          value: smart
-        - dps_val: chargego
-          value: return_to_base
-        - dps_val: zone
-          value: zone
-        - dps_val: pose
-          value: clean_spot
-        - dps_val: part
-          value: part
-        - dps_val: edge
-          value: edge
-        - dps_val: explore
-          value: explore
-        - dps_val: exploreclean
-          value: exploreclean
-    - id: 5
-      type: string
-      name: status
-      readonly: true
-      mapping:
-        - dps_val: standby
-          value: standby
-        - dps_val: smart
-          value: cleaning
-        - dps_val: zone_clean
-          value: cleaning
-        - dps_val: part_clean
-          value: cleaning
-        - dps_val: cleaning
-          value: cleaning
-        - dps_val: paused
-          value: paused
-        - dps_val: goto_charge
-          value: returning
-        - dps_val: charging
-          value: docked
-        - dps_val: charge_done
-          value: docked
-        - dps_val: sleep
-          value: standby
-        - dps_val: explore
-          value: cleaning
-        - dps_val: base_charging
-          value: docked
-    - id: 8
-      type: integer
-      name: battery
-      readonly: true
-    - id: 9
-      type: string
-      name: fan_speed
-      mapping:
-        - dps_val: gentle
-          value: gentle
-        - dps_val: normal
-          value: normal
-        - dps_val: strong
-          value: strong
-        - dps_val: max
-          value: max
-        - dps_val: closed
-          value: off
-    - id: 11
-      type: boolean
-      name: locate
-    - id: 12
-      type: string
-      name: direction_control
-      mapping:
-        - dps_val: foward
-          value: forward
-        - dps_val: backward
-          value: backward
-        - dps_val: turn_left
-          value: left
-        - dps_val: turn_right
-          value: right
-        - dps_val: stop
-          value: stop
-    - id: 28
-      type: bitfield
-      name: error
-      readonly: true
+      - id: 1
+        type: boolean
+        name: power
+      - id: 2
+        type: boolean
+        name: activate
+      - id: 4
+        type: string
+        name: command
+        mapping:
+          - dps_val: smart
+            value: smart
+          - dps_val: chargego
+            value: return_to_base
+          - dps_val: zone
+            value: zone
+          - dps_val: pose
+            value: clean_spot
+          - dps_val: part
+            value: part
+          - dps_val: edge
+            value: edge
+          - dps_val: explore
+            value: explore
+          - dps_val: exploreclean
+            value: exploreclean
+      - id: 5
+        type: string
+        name: status
+        readonly: true
+        mapping:
+          - dps_val: standby
+            value: standby
+          - dps_val: smart
+            value: cleaning
+          - dps_val: zone_clean
+            value: cleaning
+          - dps_val: part_clean
+            value: cleaning
+          - dps_val: cleaning
+            value: cleaning
+          - dps_val: paused
+            value: paused
+          - dps_val: goto_charge
+            value: returning
+          - dps_val: charging
+            value: docked
+          - dps_val: charge_done
+            value: docked
+          - dps_val: sleep
+            value: standby
+          - dps_val: explore
+            value: cleaning
+          - dps_val: base_charging
+            value: docked
+      - id: 8
+        type: integer
+        name: battery
+        readonly: true
+      - id: 9
+        type: string
+        name: fan_speed
+        mapping:
+          - dps_val: gentle
+            value: gentle
+          - dps_val: normal
+            value: normal
+          - dps_val: strong
+            value: strong
+          - dps_val: max
+            value: max
+          - dps_val: closed
+            value: "off"
+      - id: 11
+        type: boolean
+        name: locate
+      - id: 12
+        type: string
+        name: direction_control
+        mapping:
+          - dps_val: foward
+            value: forward
+          - dps_val: backward
+            value: backward
+          - dps_val: turn_left
+            value: left
+          - dps_val: turn_right
+            value: right
+          - dps_val: stop
+            value: stop
+      - id: 28
+        type: bitfield
+        name: error
+        readonly: true
   - entity: switch
     translation_key: return_to_base
     category: config
@@ -122,7 +122,7 @@ entities:
           - dps_val: high
             value: high
           - dps_val: closed
-            value: off
+            value: "off"
   - entity: select
     translation_key: clean_efficiency
     category: config
