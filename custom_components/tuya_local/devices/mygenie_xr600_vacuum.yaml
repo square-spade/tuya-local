@@ -61,6 +61,8 @@ entities:
             value: cleaning
           - dps_val: base_charging
             value: docked
+          - dps_val: base_sleeping
+            value: docked
       - id: 8
         type: integer
         name: battery
