@@ -5,6 +5,8 @@ import secrets
 import string
 
 import logging
+from secrets import randbelow
+from time import time
 from base64 import b64decode, b64encode
 
 from homeassistant.components.lock import LockEntity, LockEntityFeature
@@ -101,6 +103,7 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
         self._req_unlock_dp = dps_map.pop("request_unlock", None)
         self._approve_unlock_dp = dps_map.pop("approve_unlock", None)
         self._code_unlock_dp = dps_map.pop("code_unlock", None)
+        self._set_code_dp = dps_map.pop("set_unlock_code", None)
         self._remote_key_dp = dps_map.pop("remote_pd_setkey_check", None)  # DP73
         self._ble_cmd_dp = dps_map.pop("ble_unlock_cmd", None)  # DP6 simple BLE unlock
         self._req_intercom_dp = dps_map.pop("request_intercom", None)
@@ -195,14 +198,8 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
 
     @property
     def code_format(self):
-        """Return the code format of the lock.
-
-        If a remote key dp (DP73) is configured alongside code_unlock (DP61),
-        the key is extracted automatically so no code entry is needed in the UI.
-        Only advertise code_format (which triggers the HA lock card PIN input)
-        when there is no automatic key source available.
-        """
-        if self._code_unlock_dp and not self._remote_key_dp:
+        """Return the code format of the lock."""
+        if self._code_unlock_dp and not self._set_code_dp or not self._remote_key_dp:
             return r".{8}"
         return None
 
@@ -246,6 +243,19 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
         if self._lock_dp and not self._lock_dp.readonly:
             _LOGGER.info("%s locking", self._config.config_id)
             await self._lock_dp.async_set_value(self._device, True)
+        elif self._code_unlock_dp and self._set_code_dp:
+            code = "%08d" % randbelow(100000000)
+            setting = self.build_code_set_msg(code)
+            msg = self.build_code_unlock_msg(
+                CODE_LOCK, member_id=7, code=code, source=CODE_SRC_UNKNOWN
+            )
+            _LOGGER.info("%s locking with random code", self._config.config_id)
+            await self._device.async_set_properties(
+                {
+                    self._set_code_dp.id: setting,
+                    self._code_unlock_dp.id: msg,
+                }
+            )
         elif self._code_unlock_dp:
             code = kwargs.get("code") or await self._set_remote_key()
             if not code:
@@ -262,9 +272,23 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
 
     async def async_unlock(self, **kwargs):
         """Unlock the lock."""
-        if self._code_unlock_dp:
-            # Prefer an explicitly provided code (e.g. from automation),
-            # otherwise extract automatically from the cached DP73 payload.
+        if self._lock_dp and not self._lock_dp.readonly:
+            _LOGGER.info("%s unlocking", self._config.config_id)
+            await self._lock_dp.async_set_value(self._device, False)
+        elif self._code_unlock_dp and self._set_code_dp:
+            code = "%08d" % randbelow(100000000)
+            setting = self.build_code_set_msg(code)
+            msg = self.build_code_unlock_msg(
+                CODE_UNLOCK, member_id=7, code=code, source=CODE_SRC_UNKNOWN
+            )
+            _LOGGER.info("%s locking with random code", self._config.config_id)
+            await self._device.async_set_properties(
+                {
+                    self._set_code_dp.id: setting,
+                    self._code_unlock_dp.id: msg,
+                }
+            )
+        elif self._code_unlock_dp:
             code = kwargs.get("code") or await self._set_remote_key()
             if not code:
                 raise ValueError(
@@ -314,6 +338,18 @@ class TuyaLocalLock(TuyaLocalEntity, LockEntity):
         # msg += b"\x00"  # ordinary user (0x01 is admin)
         return b64encode(msg).decode("utf-8")
 
+    def build_code_set_msg(self, code):
+        """Generate the set code message."""
+        if len(code) != 8 or not code.isascii():
+            raise ValueError("Code must be 8 ASCII characters")
+        validity = int(time())
+        msg = bytearray()
+        msg += (7).to_bytes(3, "big")  # valid + member ID
+        # start and end times. 5 minute allowance each way for clock drift
+        msg += (validity - 300).to_bytes(4, "big")
+        msg += (validity + 300).to_bytes(4, "big")
+        msg += (1).to_bytes(2, "big")  # usable times
+        msg += code.encode("ascii")
     def build_code_set_key(self, validity, member_id, start_time, end_time, access_times, code):
         """Generate the 21-byte DP 60/73 remote key provisioning message."""
         if len(code) != 8 or not code.isascii():
