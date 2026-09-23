@@ -3,9 +3,9 @@ products:
   - id: e1k592pc
     manufacturer: MyGenie
     model: XR600
-primary_entity:
-  entity: vacuum
-  dps:
+entities:
+  - entity: vacuum
+    dps:
     - id: 1
       type: boolean
       name: power
